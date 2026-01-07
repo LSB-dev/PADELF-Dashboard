@@ -11,11 +11,11 @@ import yaml
 from .model import Dataset
 
 # Default: URL to datasets.yaml in the Publicly-Available-Datasets-For-Electric-Load-Forecasting repo
-# TODO: switch to main branch URL after merge
+
 DEFAULT_DATASETS_URL = (
     "https://raw.githubusercontent.com/LSB-dev/"
     "Publicly-Available-Datasets-For-Electric-Load-Forecasting/"
-    "feature/add-datasets-yaml/metadata/datasets.yaml"
+    "main/metadata/datasets.yaml"
 )  
 
 @dataclass(frozen=True)
