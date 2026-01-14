@@ -5,7 +5,7 @@ import streamlit as st
 from padelf_dashboard.data.client import load_datasets
 
 st.set_page_config(page_title="PADELF Dashboard (v0.03)", layout="wide")
-st.title("PADELF Dashboard (v0.01)")
+st.title("PADELF Dashboard (v0.03)")
 
 try:
     datasets = load_datasets()
