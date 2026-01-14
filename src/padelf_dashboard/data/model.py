@@ -21,7 +21,7 @@ class TimeCoverage(BaseModel):
         start_date: "YYYY-MM" | "YYYY-MM-DD"
         end_date: "YYYY-MM" | "YYYY-MM-DD" | null
     """
-    start_date: str
+    start_date: Optional[str] = None
     end_date: Optional[str] = None
 
 
