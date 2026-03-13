@@ -10,6 +10,7 @@ def get_datasets():
 
 st.set_page_config(page_title="PADELF Dashboard (v0.04)", layout="wide")
 st.title("PADELF Dashboard (v0.04)")
+st.caption("Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting)")
 
 try:
     datasets = get_datasets()
@@ -29,3 +30,10 @@ try:
 except Exception as e:
     st.error("Failed to load or validate metadata.")
     st.exception(e)
+
+# Footer with link to GitHub repo
+
+st.markdown("""
+---
+Made by [Guilherme](https://github.com/guischmid). View on [GitHub](https://github.com/LSB-dev/PADELF-Dashboard).
+""")
