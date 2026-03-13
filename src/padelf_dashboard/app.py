@@ -3,6 +3,7 @@
 import streamlit as st
 from padelf_dashboard.data.client import load_datasets
 from padelf_dashboard.ui.results import render_results_table, search_datasets
+from padelf_dashboard.ui.filters import render_filter_sidebar, apply_filters
 
 @st.cache_data(ttl=3600)  # Cache for 1 hour (3600 seconds)
 def get_datasets():
@@ -16,16 +17,25 @@ try:
     datasets = get_datasets()
     st.success(f"Metadata loaded. Datasets: {len(datasets)}")
 
+    # Step 1: Render filters sidebar
+    filters = render_filter_sidebar(datasets)
+
+    # Step 2: Apply filters
+    filtered_by_filters = apply_filters(filters, datasets)
+
+    # Step 3: Search in filtered results
     query = st.text_input(
         "Search",
         placeholder="Search by name, abbreviation, or domain...",
         key="search_query"
     )
 
-    filtered = search_datasets(query, datasets)
-    st.caption(f"Showing {len(filtered)} of {len(datasets)} datasets")
+    final_results = search_datasets(query, filtered_by_filters)
 
-    render_results_table(filtered)
+    # Step 4 & 5: Update result count and render results
+    st.caption(f"Showing {len(final_results)} of {len(datasets)} datasets")
+
+    render_results_table(final_results)
 
 except Exception as e:
     st.error("Failed to load or validate metadata.")
