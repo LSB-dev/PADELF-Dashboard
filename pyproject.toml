@@ -1,0 +1,14 @@
+[project]
+name = "padelf-dashboard"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit",
+    "pyyaml",
+    "pydantic",
+    "requests",
+]
+
+[build-system]
+requires = ["hatchling>=1.0", "wheel"]
+build-backend = "hatchling.build"

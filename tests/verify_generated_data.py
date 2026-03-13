@@ -3,6 +3,7 @@
 Verify that the generated datasets.yaml can be loaded by the Dashboard app logic.
 """
 import sys
+import os
 from pathlib import Path
 
 # Add src to path so we can import padelf_dashboard
@@ -12,9 +13,16 @@ sys.path.insert(0, str(project_root / "src"))
 from padelf_dashboard.data.client import MetadataSource, load_datasets
 
 def verify_generated_data():
-    # Path to the generated YAML from the other project
-    datasets_yaml = Path("/Users/gui/Fraunhofer/Publicly-Available-Datasets-For-Electric-Load-Forecasting/metadata/datasets.yaml")
-    
+    datasets_yaml_path = os.getenv("PADELF_LOCAL_YAML")
+    if not datasets_yaml_path:
+        print(
+            "PADELF_LOCAL_YAML is not set; skipping metadata verification.\n"
+            "Set PADELF_LOCAL_YAML to the local datasets.yaml path to enable this check."
+        )
+        sys.exit(0)
+
+    datasets_yaml = Path(datasets_yaml_path)
+
     if not datasets_yaml.exists():
         print(f"Error: {datasets_yaml} does not exist.")
         sys.exit(1)
