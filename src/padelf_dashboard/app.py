@@ -1,33 +1,30 @@
 #Streamlit entry
 
 import streamlit as st
-
 from padelf_dashboard.data.client import load_datasets
+from padelf_dashboard.ui.results import render_results_table, search_datasets
 
-st.set_page_config(page_title="PADELF Dashboard (v0.03)", layout="wide")
-st.title("PADELF Dashboard (v0.03)")
+@st.cache_data(ttl=3600)  # Cache for 1 hour (3600 seconds)
+def get_datasets():
+    return load_datasets()
+
+st.set_page_config(page_title="PADELF Dashboard (v0.04)", layout="wide")
+st.title("PADELF Dashboard (v0.04)")
 
 try:
-    datasets = load_datasets()
+    datasets = get_datasets()
     st.success(f"Metadata loaded. Datasets: {len(datasets)}")
 
-    if len(datasets) == 0:
-        st.info("No datasets yet (datasets.yaml is empty).")
-    else:
-        # Minimal preview table (helps confirm parsing)
-        st.dataframe(
-            [
-                {
-                    "dataset_id": d.dataset_id,
-                    "name": d.name,
-                    "domain": d.domain,
-                    "resolution_minutes": d.resolution_minutes,
-                    "url": d.access.url,
-                }
-                for d in datasets
-            ],
-            use_container_width=True,
-        )
+    query = st.text_input(
+        "Search",
+        placeholder="Search by name, abbreviation, or domain...",
+        key="search_query"
+    )
+
+    filtered = search_datasets(query, datasets)
+    st.caption(f"Showing {len(filtered)} of {len(datasets)} datasets")
+
+    render_results_table(filtered)
 
 except Exception as e:
     st.error("Failed to load or validate metadata.")
