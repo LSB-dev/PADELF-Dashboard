@@ -1,6 +1,7 @@
 [project]
 name = "padelf-dashboard"
 version = "0.1.0"
+description = "Streamlit dashboard for exploring public electric load forecasting datasets"
 requires-python = ">=3.10"
 dependencies = [
     "streamlit",
@@ -12,3 +13,6 @@ dependencies = [
 [build-system]
 requires = ["hatchling>=1.0", "wheel"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/padelf_dashboard"]

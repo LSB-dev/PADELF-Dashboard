@@ -4,6 +4,7 @@ import streamlit as st
 from padelf_dashboard.data.client import load_datasets
 from padelf_dashboard.ui.results import render_results_table, search_datasets
 from padelf_dashboard.ui.filters import render_filter_sidebar, apply_filters
+from padelf_dashboard.ui.datasets_detail import render_detail
 
 @st.cache_data(ttl=3600)  # Cache for 1 hour (3600 seconds)
 def get_datasets():
@@ -36,6 +37,14 @@ try:
     st.caption(f"Showing {len(final_results)} of {len(datasets)} datasets")
 
     render_results_table(final_results)
+
+    # Step 6: Render expandable detail views
+    st.markdown("---")
+    st.subheader("Dataset Details")
+    
+    for dataset in final_results:
+        with st.expander(label=dataset.name, expanded=False):
+            render_detail(dataset)
 
 except Exception as e:
     st.error("Failed to load or validate metadata.")

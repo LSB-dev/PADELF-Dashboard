@@ -1,2 +1,11 @@
 # PADELF-Dashboard
-Dashboard for enhancing the dataset selection process, based on repository "Publicly Available Datasets For Electric Load Forecasting"
+
+## Overview
+
+PADELF-Dashboard is an interactive Streamlit web application that enables researchers and practitioners to explore and discover electric load forecasting datasets from 43+ publicly available sources, streamlining the dataset selection process for load forecasting research and applications.
+
+Dashboard complete locally; deployment platform pending.
+
+## Data Source
+
+This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](../Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
