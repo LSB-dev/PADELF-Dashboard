@@ -15,7 +15,7 @@ from .model import Dataset
 DEFAULT_DATASETS_URL = (
     "https://raw.githubusercontent.com/LSB-dev/"
     "Publicly-Available-Datasets-For-Electric-Load-Forecasting/"
-    "main/metadata/datasets.yaml"
+    "main/metadata/datasets_full.yaml"
 )  
 
 @dataclass(frozen=True)
