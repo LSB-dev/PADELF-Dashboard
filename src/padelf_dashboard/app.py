@@ -10,7 +10,7 @@ from padelf_dashboard.ui.datasets_detail import render_detail
 def get_datasets():
     return load_datasets()
 
-st.set_page_config(page_title="PADELF Dashboard (v0.04)", layout="wide")
+st.set_page_config(page_title="PADELF Dashboard (v0.04)", layout="wide", initial_sidebar_state="expanded")
 st.title("PADELF Dashboard (v0.04)")
 st.caption("Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting)")
 
