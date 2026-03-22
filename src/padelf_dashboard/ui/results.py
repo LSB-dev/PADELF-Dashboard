@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
+import pandas as pd
 import streamlit as st
 
 from padelf_dashboard.data.model import Dataset
@@ -60,4 +61,32 @@ def render_results_table(datasets: List[Dataset]) -> None:
             }
         )
 
-    st.dataframe(rows, use_container_width=True)
+    df = pd.DataFrame(rows)
+
+    st.dataframe(
+        df,
+        use_container_width=True,
+        column_config={
+            "name": st.column_config.Column("Dataset Name"),
+            "abbreviation": st.column_config.Column("Abbreviation"),
+            "domain": st.column_config.Column(
+                "Domain",
+                help="Application domain: system, residential, industrial, or unknown",
+            ),
+            "type": st.column_config.Column(
+                "Type",
+                help="Data format: collection, file_archive, or platform_api",
+            ),
+            "resolution_minutes": st.column_config.Column(
+                "Resolution (min)",
+                help="Temporal resolution of the data in minutes",
+            ),
+            "horizons": st.column_config.Column(
+                "Horizons",
+                help=(
+                    "Forecasting horizons: vst (very short-term), st (short-term), "
+                    "mt (medium-term), lt (long-term)"
+                ),
+            ),
+        },
+    )
