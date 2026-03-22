@@ -1,0 +1,14 @@
+services:
+  padelf-dashboard:
+    build:
+      context: .
+    container_name: padelf-dashboard
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+
+    # Optional local dataset mount (instead of loading via URL):
+    # volumes:
+    #   - ./metadata/datasets_full.yaml:/app/metadata/datasets_full.yaml:ro
