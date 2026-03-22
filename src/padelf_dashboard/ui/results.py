@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import random
 from typing import List
 
 import pandas as pd
@@ -7,6 +8,48 @@ import streamlit as st
 
 from padelf_dashboard.data.model import Dataset
 from padelf_dashboard.ui.data_quality import completeness_score
+
+
+TABLE_COLUMNS = [
+    "Dataset Name",
+    "Abbreviation",
+    "Domain",
+    "Type",
+    "Resolution (min)",
+    "Horizons",
+    "Completeness",
+]
+
+
+def build_results_dataframe(datasets: List[Dataset]) -> pd.DataFrame:
+    """Build the results dataframe used by the app table views."""
+
+    rows = []
+    for ds in datasets:
+        rows.append(
+            {
+                "Dataset Name": ds.name or "",
+                "Abbreviation": ds.abbreviation or "",
+                "Domain": ds.domain or "",
+                "Type": ds.type or "",
+                "Resolution (min)": (
+                    ds.resolution_minutes if ds.resolution_minutes is not None else None
+                ),
+                "Horizons": ", ".join(ds.horizons) if ds.horizons else "",
+                "Completeness": completeness_score(ds),
+            }
+        )
+
+    return pd.DataFrame(rows, columns=TABLE_COLUMNS)
+
+
+def pick_random_dataset(datasets: List[Dataset]) -> Dataset | None:
+    """Return one random dataset from the provided list, or None when empty."""
+
+    if not datasets:
+        return None
+
+    return random.choice(datasets)
 
 
 def search_datasets(query: str, datasets: List[Dataset]) -> List[Dataset]:
@@ -37,7 +80,12 @@ def search_datasets(query: str, datasets: List[Dataset]) -> List[Dataset]:
     return results
 
 
-def render_results_table(datasets: List[Dataset]) -> None:
+def render_results_table(
+    datasets: List[Dataset],
+    *,
+    enable_selection: bool = False,
+    key: str = "results_table",
+) -> str | None:
     """Renders a Streamlit dataframe showing a summary of the given datasets.
 
     Columns: name, abbreviation, domain, type, resolution_minutes, horizons
@@ -47,56 +95,58 @@ def render_results_table(datasets: List[Dataset]) -> None:
 
     if not datasets:
         st.info("No datasets match your search.")
-        return
+        return None
 
-    rows = []
-    for ds in datasets:
-        rows.append(
-            {
-                "name": ds.name or "",
-                "abbreviation": ds.abbreviation or "",
-                "domain": ds.domain or "",
-                "type": ds.type or "",
-                "resolution_minutes": ds.resolution_minutes if ds.resolution_minutes is not None else "",
-                "horizons": ", ".join(ds.horizons) if ds.horizons else "",
-                "completeness": completeness_score(ds),
-            }
-        )
+    df = build_results_dataframe(datasets)
+    table_height = min(len(datasets) * 35 + 38, 600)
 
-    df = pd.DataFrame(rows)
-    table_height = min(len(rows) * 35 + 38, 600)
-
-    st.dataframe(
-        df,
-        height=table_height,
-        hide_index=True,
-        use_container_width=True,
-        column_config={
-            "name": st.column_config.Column("Dataset Name", width="large"),
-            "abbreviation": st.column_config.Column("Abbreviation", width="small"),
-            "domain": st.column_config.Column(
-                "Domain",
+    dataframe_kwargs = {
+        "height": table_height,
+        "hide_index": True,
+        "width": "stretch",
+        "column_config": {
+            "Dataset Name": st.column_config.Column(width="large"),
+            "Abbreviation": st.column_config.Column(width="small"),
+            "Domain": st.column_config.Column(
                 help="Application domain: system, residential, industrial, or unknown",
             ),
-            "type": st.column_config.Column(
-                "Type",
+            "Type": st.column_config.Column(
                 help="Data format: collection, file_archive, or platform_api",
             ),
-            "resolution_minutes": st.column_config.Column(
-                "Resolution (min)",
+            "Resolution (min)": st.column_config.Column(
                 help="Temporal resolution of the data in minutes",
             ),
-            "horizons": st.column_config.Column(
-                "Horizons",
+            "Horizons": st.column_config.Column(
                 help=(
                     "Forecasting horizons: vst (very short-term), st (short-term), "
                     "mt (medium-term), lt (long-term)"
                 ),
             ),
-            "completeness": st.column_config.Column(
-                "Completeness",
+            "Completeness": st.column_config.Column(
                 help="Metadata completeness: license, citation, and resolution (3/3 = complete)",
                 width="small",
             ),
         },
+    }
+
+    if not enable_selection:
+        st.dataframe(df, **dataframe_kwargs)
+        return None
+
+    selection_event = st.dataframe(
+        df,
+        key=key,
+        on_select="rerun",
+        selection_mode="single-row",
+        **dataframe_kwargs,
     )
+
+    selected_rows = (
+        selection_event.get("selection", {}).get("rows", []) if selection_event else []
+    )
+    if selected_rows:
+        selected_index = selected_rows[0]
+        if 0 <= selected_index < len(datasets):
+            return datasets[selected_index].dataset_id
+
+    return None

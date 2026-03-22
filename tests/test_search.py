@@ -5,7 +5,7 @@ from padelf_dashboard.data.model import (
     SourcePaper,
     TimeCoverage,
 )
-from padelf_dashboard.ui.results import search_datasets
+from padelf_dashboard.ui.results import pick_random_dataset, search_datasets
 
 
 def _make_dataset(
@@ -78,3 +78,18 @@ def test_none_abbreviation_does_not_crash():
     results = search_datasets("alpha", datasets)
     assert len(results) == 1
     assert results[0].dataset_id == "a"
+
+
+def test_pick_random_dataset_returns_none_for_empty_input():
+    assert pick_random_dataset([]) is None
+
+
+def test_pick_random_dataset_returns_dataset_from_input_list():
+    datasets = [
+        _make_dataset("a", "Alpha", "A", "residential"),
+        _make_dataset("b", "Beta", "B", "industrial"),
+    ]
+
+    result = pick_random_dataset(datasets)
+
+    assert result in datasets

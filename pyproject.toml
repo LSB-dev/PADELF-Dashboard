@@ -5,6 +5,7 @@ description = "Streamlit dashboard for exploring public electric load forecastin
 requires-python = ">=3.10"
 dependencies = [
     "streamlit",
+    "streamlit-aggrid",
     "pyyaml",
     "pydantic",
     "requests",
