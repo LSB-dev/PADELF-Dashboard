@@ -42,19 +42,19 @@ def render_detail(dataset: Dataset) -> None:
     col1, col2 = st.columns(2)
     
     metadata_fields = [
-        ("dataset_id", dataset.dataset_id),
-        ("type", dataset.type),
-        ("domain", dataset.domain),
-        ("resolution_minutes", dataset.resolution_minutes),
-        ("time_coverage", 
+        ("Dataset ID", dataset.dataset_id),
+        ("Type", dataset.type),
+        ("Domain", dataset.domain),
+        ("Resolution (min)", dataset.resolution_minutes),
+        ("Time Coverage", 
          f"{dataset.time_coverage.start_date} – {dataset.time_coverage.end_date or 'Present'}"
          if dataset.time_coverage and dataset.time_coverage.start_date 
          else "N/A"),
-        ("duration_months", dataset.duration_months),
-        ("features", dataset.features),
-        ("horizons", dataset.horizons),
-        ("regions_multiple", dataset.regions_multiple),
-        ("license", dataset.license),
+        ("Duration (months)", dataset.duration_months),
+        ("Features", dataset.features),
+        ("Horizons", dataset.horizons),
+        ("Multiple Regions", dataset.regions_multiple),
+        ("License", dataset.license),
     ]
     
     # Split fields across two columns
@@ -70,7 +70,7 @@ def render_detail(dataset: Dataset) -> None:
     # Access link
     st.markdown("---")
     if dataset.access and dataset.access.url:
-        st.markdown(f"**Access**: [Link]({dataset.access.url})")
+        st.markdown(f"**Access**: [{dataset.access.url}]({dataset.access.url})")
     
     # Access notes
     if dataset.access and dataset.access.access_notes:
@@ -82,6 +82,7 @@ def render_detail(dataset: Dataset) -> None:
     
     if dataset.citation:
         if dataset.citation.preferred_citation:
+            st.caption("Click the copy icon in the top-right corner of the code block to copy.")
             st.code(dataset.citation.preferred_citation, language="text")
         
         if dataset.citation.bibtex:
@@ -95,6 +96,6 @@ def render_detail(dataset: Dataset) -> None:
     # Source paper information
     if dataset.source_paper and dataset.source_paper.in_baur_2024:
         st.markdown("---")
-        st.write("📄 **Included in Baur et al. 2024**")
+        st.write("Source Paper: **Included in Baur et al. 2024**")
         if dataset.source_paper.baur_2024_usage_count is not None:
             st.caption(f"Usage count: {dataset.source_paper.baur_2024_usage_count}")
