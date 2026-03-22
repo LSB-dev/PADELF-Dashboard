@@ -5,6 +5,7 @@ from padelf_dashboard.data.client import load_datasets
 from padelf_dashboard.ui.results import render_results_table, search_datasets
 from padelf_dashboard.ui.filters import render_filter_sidebar, apply_filters
 from padelf_dashboard.ui.datasets_detail import render_detail
+from padelf_dashboard.ui.statistics import render_statistics_button
 
 
 @st.cache_data(ttl=3600)  # Cache for 1 hour (3600 seconds)
@@ -12,11 +13,11 @@ def get_datasets():
     return load_datasets()
 
 
-st.set_page_config(page_title="PADELF Dashboard (v0.04)",
+st.set_page_config(page_title="PADELF Dashboard - Browse Electric Load Forecasting Datasets",
                    layout="wide", initial_sidebar_state="expanded")
-st.title("PADELF Dashboard (v0.04)")
+st.title("PADELF Dashboard")
 st.caption(
-    "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting)")
+    "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) on GitHub. Use the filters and search box to find datasets that match your needs, and click on each dataset for more details.")
 
 try:
     datasets = get_datasets()
@@ -31,7 +32,7 @@ try:
     # Step 3: Search in filtered results
     query = st.text_input(
         "Search",
-        placeholder="Search by name, abbreviation, or domain...",
+        placeholder="Search by name, abbreviation, or domain... ",
         key="search_query"
     )
 
@@ -42,6 +43,7 @@ try:
 
     # Step 5: Render results table
     render_results_table(final_results)
+    render_statistics_button(datasets, final_results)
 
     # Step 6: Render expandable detail views
     st.markdown("")
@@ -51,7 +53,7 @@ try:
             render_detail(dataset)
 
 except Exception as e:
-    st.error("Failed to load or validate metadata.")
+    st.error("Failed to load or validate metadata. ")
     st.exception(e)
 
 # Footer with link to GitHub repo
