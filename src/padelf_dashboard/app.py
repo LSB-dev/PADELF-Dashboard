@@ -20,7 +20,7 @@ st.caption(
 
 try:
     datasets = get_datasets()
-    st.success(f"Metadata loaded. Datasets: {len(datasets)}")
+    st.caption(f"{len(datasets)} datasets loaded from PADELF repository")
 
     # Step 1: Render filters sidebar
     filters = render_filter_sidebar(datasets)
@@ -37,14 +37,14 @@ try:
 
     final_results = search_datasets(query, filtered_by_filters)
 
-    # Step 4 & 5: Update result count and render results
-    st.caption(f"Showing {len(final_results)} of {len(datasets)} datasets")
+    # Step 4: Show result count in sidebar
+    st.sidebar.caption(f"Showing {len(final_results)} of {len(datasets)} datasets")
 
+    # Step 5: Render results table
     render_results_table(final_results)
 
     # Step 6: Render expandable detail views
-    st.markdown("---")
-    st.subheader("Dataset Details")
+    st.markdown("")
 
     for dataset in final_results:
         with st.expander(label=dataset.name, expanded=False):
