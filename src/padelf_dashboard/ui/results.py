@@ -62,13 +62,16 @@ def render_results_table(datasets: List[Dataset]) -> None:
         )
 
     df = pd.DataFrame(rows)
+    table_height = min(len(rows) * 35 + 38, 600)
 
     st.dataframe(
         df,
+        height=table_height,
+        hide_index=True,
         use_container_width=True,
         column_config={
-            "name": st.column_config.Column("Dataset Name"),
-            "abbreviation": st.column_config.Column("Abbreviation"),
+            "name": st.column_config.Column("Dataset Name", width="large"),
+            "abbreviation": st.column_config.Column("Abbreviation", width="small"),
             "domain": st.column_config.Column(
                 "Domain",
                 help="Application domain: system, residential, industrial, or unknown",
