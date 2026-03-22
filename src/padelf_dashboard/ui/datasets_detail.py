@@ -3,6 +3,7 @@ from __future__ import annotations
 import streamlit as st
 
 from padelf_dashboard.data.model import Dataset
+from padelf_dashboard.ui.data_quality import completeness_score, missing_fields
 
 
 def render_detail(dataset: Dataset) -> None:
@@ -24,6 +25,14 @@ def render_detail(dataset: Dataset) -> None:
         st.subheader(f"{dataset.name} ({dataset.abbreviation})")
     else:
         st.subheader(dataset.name)
+
+    score = completeness_score(dataset)
+    missing = missing_fields(dataset)
+
+    if score == "3/3":
+        st.success("Metadata complete (3/3)")
+    else:
+        st.warning(f"Metadata incomplete ({score}) -- missing: {', '.join(missing)}")
     
     # Helper function to format values
     def format_value(value):

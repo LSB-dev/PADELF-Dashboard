@@ -6,6 +6,7 @@ import pandas as pd
 import streamlit as st
 
 from padelf_dashboard.data.model import Dataset
+from padelf_dashboard.ui.data_quality import completeness_score
 
 
 def search_datasets(query: str, datasets: List[Dataset]) -> List[Dataset]:
@@ -58,6 +59,7 @@ def render_results_table(datasets: List[Dataset]) -> None:
                 "type": ds.type or "",
                 "resolution_minutes": ds.resolution_minutes if ds.resolution_minutes is not None else "",
                 "horizons": ", ".join(ds.horizons) if ds.horizons else "",
+                "completeness": completeness_score(ds),
             }
         )
 
@@ -90,6 +92,11 @@ def render_results_table(datasets: List[Dataset]) -> None:
                     "Forecasting horizons: vst (very short-term), st (short-term), "
                     "mt (medium-term), lt (long-term)"
                 ),
+            ),
+            "completeness": st.column_config.Column(
+                "Completeness",
+                help="Metadata completeness: license, citation, and resolution (3/3 = complete)",
+                width="small",
             ),
         },
     )
