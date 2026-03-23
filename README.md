@@ -8,7 +8,7 @@ Dashboard complete locally; deployment platform pending.
 
 ## Data Source
 
-This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](../Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
+This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
 
 ## Docker Deployment
 
