@@ -222,5 +222,5 @@ except Exception as e:
 
 st.markdown("""
 ---
-Made by [Guilherme](https://github.com/guischmid). View on [GitHub](https://github.com/LSB-dev/PADELF-Dashboard).
+View on [GitHub](https://github.com/LSB-dev/PADELF-Dashboard).
 """)
