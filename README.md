@@ -10,6 +10,16 @@ Dashboard complete locally; deployment platform pending.
 
 This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
 
+## Related Package
+
+For programmatic access to datasets in Python, use the [PADELF-PIP package](https://github.com/LSB-dev/padelf-pip):
+
+```bash
+pip install padelf
+```
+
+This dashboard and the package are complementary: use the dashboard for discovery and filtering, and use the package to load selected datasets directly into pandas DataFrames.
+
 ## Docker Deployment
 
 Prerequisites: Docker and Docker Compose.
