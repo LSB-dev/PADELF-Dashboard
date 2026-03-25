@@ -27,7 +27,7 @@ def render_glossary(datasets: list) -> None:
         "platform_api": "Accessible via platform or API",
     }
 
-    @st.dialog("Glossary")
+    @st.dialog("Glossary", width="large")
     def show_glossary_dialog() -> None:
         st.subheader("Metadata Fields")
         for field, explanation in metadata_fields.items():

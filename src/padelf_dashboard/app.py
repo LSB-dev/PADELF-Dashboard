@@ -38,11 +38,7 @@ st.set_page_config(page_title="PADELF Dashboard - Browse Electric Load Forecasti
 try:
     datasets = get_datasets()
 
-    title_col, glossary_col = st.columns([7, 1])
-    with title_col:
-        st.title("PADELF Dashboard")
-    with glossary_col:
-        render_glossary(datasets)
+    st.title("PADELF Dashboard")
 
     st.caption(
         "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) on GitHub. Use the filters and search box to find datasets that match your needs, and click on each dataset for more details.")
@@ -109,6 +105,7 @@ try:
     if not final_results:
         st.info("No datasets match your criteria.")
         render_statistics_button(datasets, final_results)
+        render_glossary(datasets)
     else:
         dataset_by_id = {dataset.dataset_id: dataset for dataset in final_results}
         display_df = build_results_dataframe(final_results)
@@ -201,6 +198,7 @@ try:
                     st.session_state.selected_dataset = selected_dataset_id
 
             render_statistics_button(datasets, final_results)
+            render_glossary(datasets)
 
         with right_col:
             selected_dataset_key = st.session_state.selected_dataset
