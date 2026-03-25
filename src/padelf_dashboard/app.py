@@ -24,6 +24,7 @@ from padelf_dashboard.ui.results import (
 from padelf_dashboard.ui.filters import render_filter_sidebar, apply_filters
 from padelf_dashboard.ui.datasets_detail import render_detail
 from padelf_dashboard.ui.statistics import render_statistics_button
+from padelf_dashboard.ui.glossary import render_glossary
 
 
 @st.cache_data(ttl=3600)  # Cache for 1 hour (3600 seconds)
@@ -33,12 +34,18 @@ def get_datasets():
 
 st.set_page_config(page_title="PADELF Dashboard - Browse Electric Load Forecasting Datasets",
                    layout="wide", initial_sidebar_state="expanded")
-st.title("PADELF Dashboard")
-st.caption(
-    "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) on GitHub. Use the filters and search box to find datasets that match your needs, and click on each dataset for more details.")
 
 try:
     datasets = get_datasets()
+
+    title_col, glossary_col = st.columns([7, 1])
+    with title_col:
+        st.title("PADELF Dashboard")
+    with glossary_col:
+        render_glossary(datasets)
+
+    st.caption(
+        "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) on GitHub. Use the filters and search box to find datasets that match your needs, and click on each dataset for more details.")
     st.caption(f"{len(datasets)} datasets loaded from PADELF repository")
 
     if "random_dataset_id" not in st.session_state:
