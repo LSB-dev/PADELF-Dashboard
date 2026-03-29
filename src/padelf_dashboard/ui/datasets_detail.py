@@ -1,9 +1,34 @@
 from __future__ import annotations
 
+import re
 import streamlit as st
 
 from padelf_dashboard.data.model import Dataset
 from padelf_dashboard.ui.data_quality import completeness_score, missing_fields
+
+# BibTeX constants
+BIBTEX_PADELF2026 = r"""@article{padefl2026,
+  title        = {PADELF -- A handy dashboard for finding open time series data for electric forecasting},
+  author       = {Baur, Lukas and Schmid, Guilherme},
+  year         = {2026},
+  eprint       = {xxxx.yyyy},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.DL},
+  url          = {https://padelf.ipa.fraunhofer.de/},
+  note         = {Preprint describing the dataset platform}
+}"""
+
+BIBTEX_BAUR2024 = r"""@inproceedings{baur2024datasets,
+  author    = {Baur, Lukas and Chandramouli, Vignesh and Sauer, Alexander},
+  title     = {Publicly Available Datasets For Electric Load Forecasting -- An Overview},
+  booktitle = {Proceedings of the CPSL 2024},
+  editor    = {Herberger, D. and H{\"u}bner, M.},
+  location  = {Hannover},
+  publisher = {publish-Ing.},
+  year      = {2024},
+  pages     = {1--12},
+  doi       = {10.15488/17659}
+}"""
 
 
 def render_detail(dataset: Dataset) -> None:
@@ -89,18 +114,43 @@ def render_detail(dataset: Dataset) -> None:
     st.markdown("---")
     st.subheader("Citation")
     
-    if dataset.citation:
-        if dataset.citation.preferred_citation:
-            st.caption("Click the copy icon in the top-right corner of the code block to copy.")
-            st.code(dataset.citation.preferred_citation, language="text")
-        
-        if dataset.citation.bibtex:
-            st.code(dataset.citation.bibtex, language="bibtex")
-        
-        if not dataset.citation.preferred_citation and not dataset.citation.bibtex:
-            st.info("No citation available.")
+    # Extract origin key from bibtex if available and not legacy baur2024datasets
+    origin_key = "originXXX"  # default placeholder
+    has_origin = False
+    if dataset.citation and dataset.citation.bibtex:
+        bib = dataset.citation.bibtex.strip()
+        if "baur2024datasets" not in bib:
+            # Extract key: text between first '{' and first ','
+            match = re.search(r'@\w+\{([^,]+)', bib)
+            if match:
+                origin_key = match.group(1).strip()
+                has_origin = True
+    
+    # Block A: Example LaTeX text
+    example_text = (
+        r"The underlying dataset of this work is provided online~\cite{"
+        + origin_key
+        + r"} and was accessed via~\cite{padefl2026,baur2024datasets}."
+    )
+    st.caption("Example text body")
+    st.code(example_text, language="latex")
+    
+    # Block B: BibTeX entries
+    # Origin dataset reference
+    if has_origin:
+        st.caption("Origin dataset reference")
+        st.code(dataset.citation.bibtex, language="bibtex")
     else:
-        st.info("No citation available.")
+        st.caption("Origin dataset reference (pending)")
+        st.code("% originXXX: To be added for this dataset", language="bibtex")
+    
+    # PADELF platform reference
+    st.caption("PADELF platform reference")
+    st.code(BIBTEX_PADELF2026, language="bibtex")
+    
+    # Survey paper reference
+    st.caption("Survey paper reference")
+    st.code(BIBTEX_BAUR2024, language="bibtex")
     
     # Source paper information
     if dataset.source_paper and dataset.source_paper.in_baur_2024:
