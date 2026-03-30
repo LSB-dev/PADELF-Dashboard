@@ -71,3 +71,4 @@ docs/_build/
 .env
 .env.*
 *.pyc
+/connect_to_ssh.bat
