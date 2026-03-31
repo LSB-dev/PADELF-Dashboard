@@ -33,15 +33,24 @@ def get_datasets():
 
 
 st.set_page_config(page_title="PADELF Dashboard - Browse Electric Load Forecasting Datasets",
-                   layout="wide", initial_sidebar_state="expanded")
+                   layout="wide",
+                   page_icon="assets/icon.png",
+                   initial_sidebar_state="expanded")
 
 try:
     datasets = get_datasets()
+    col1, col2, col3 = st.columns([2, 2, 2])
 
-    st.title("PADELF Dashboard")
+    with col1:
+        st.image("assets/logo_padelf_search.png", width=350)
+    with col3:
+        st.image("assets/logos_both.png", width=400)
+
 
     st.caption(
-        "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) on GitHub. Use the filters and search box to find datasets that match your needs, and click on each dataset for more details.")
+        "Browse and search datasets for electric load forecasting. Data loaded from the [PADELF Repository]("
+        "https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) on GitHub. Use the "
+        "filters and search box to find datasets that match your needs, and click on each dataset for more details.")
     st.caption(f"{len(datasets)} datasets loaded from PADELF repository")
 
     if "random_dataset_id" not in st.session_state:
