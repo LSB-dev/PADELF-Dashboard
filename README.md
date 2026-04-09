@@ -1,10 +1,10 @@
-# PADELF-Dashboard
+<img src="assets/logo_padelf_search.png" width="50%">
+
+# PADELF-Search Dashboard
 
 ## Overview
 
-PADELF-Dashboard is an interactive Streamlit web application that enables researchers and practitioners to explore and discover electric load forecasting datasets from 43+ publicly available sources, streamlining the dataset selection process for load forecasting research and applications.
-
-Dashboard complete locally; deployment platform pending.
+PADELF-Search is an interactive Streamlit web application dashboard that enables researchers and practitioners to explore and discover electric load forecasting datasets from 43+ publicly available sources, streamlining the dataset selection process for load forecasting research and applications.
 
 ## Data Source
 
