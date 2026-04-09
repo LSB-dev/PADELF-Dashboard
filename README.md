@@ -6,12 +6,10 @@
 
 PADELF-Search is an interactive Streamlit web application dashboard that enables researchers and practitioners to explore and discover electric load forecasting datasets from 43+ publicly available sources, streamlining the dataset selection process for load forecasting research and applications.
 
-## Data Source
+## Related Work
+### Pip-package: Easy access to the most popular datasets
 
-This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
-
-## Related Package
-
+![logo padelf pip](logo_padelf_pip)
 For programmatic access to datasets in Python, use the [PADELF-PIP package](https://github.com/LSB-dev/padelf-pip):
 
 ```bash
@@ -20,7 +18,36 @@ pip install padelf
 
 This dashboard and the package are complementary: use the dashboard for discovery and filtering, and use the package to load selected datasets directly into pandas DataFrames.
 
-## Docker Deployment
+### The original data collection
+
+![logo padelf pip](logo_padelf_repo)
+This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. 
+The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
+
+## Usage Guide
+
+### Search and Filter
+
+The dashboard provides two ways to find datasets:
+
+- **Text search**: Search by dataset name, abbreviation, or domain using the search bar.
+- **Sidebar filters**: Filter by domain, type, forecasting horizon, or license. Multiple selections per filter use OR logic; filters across categories use AND logic.
+
+### Dataset Details
+
+Click any dataset name in the expander list below the results table to see full metadata, including access links, citation information, and source paper references.
+
+### Statistics
+
+Click "Show statistics" below the results table to open a modal with distribution charts for domain, type, horizons, and resolution. Two tabs show statistics for all datasets and for the current filtered results.
+
+### Data Quality
+
+Each dataset has a completeness score (0/3 to 3/3) based on three key metadata fields: license, citation, and temporal resolution. Incomplete datasets show which fields are missing in the detail view.
+
+
+## Run it on your own
+### Docker Deployment
 
 Prerequisites: Docker and Docker Compose.
 
@@ -75,23 +102,3 @@ The dashboard consumes `datasets_full.yaml` as its sole data source, fetched fro
 4. Run locally: `streamlit run src/padelf_dashboard/app.py`
 5. Run tests: `pytest tests/`
 
-## Usage Guide
-
-### Search and Filter
-
-The dashboard provides two ways to find datasets:
-
-- **Text search**: Search by dataset name, abbreviation, or domain using the search bar.
-- **Sidebar filters**: Filter by domain, type, forecasting horizon, or license. Multiple selections per filter use OR logic; filters across categories use AND logic.
-
-### Dataset Details
-
-Click any dataset name in the expander list below the results table to see full metadata, including access links, citation information, and source paper references.
-
-### Statistics
-
-Click "Show statistics" below the results table to open a modal with distribution charts for domain, type, horizons, and resolution. Two tabs show statistics for all datasets and for the current filtered results.
-
-### Data Quality
-
-Each dataset has a completeness score (0/3 to 3/3) based on three key metadata fields: license, citation, and temporal resolution. Incomplete datasets show which fields are missing in the detail view.
