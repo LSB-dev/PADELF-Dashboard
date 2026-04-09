@@ -24,7 +24,7 @@ from padelf_dashboard.ui.results import (
     search_datasets,
 )
 from padelf_dashboard.ui.filters import render_filter_sidebar, apply_filters
-from padelf_dashboard.ui.datasets_detail import render_detail
+from padelf_dashboard.ui.datasets_detail import render_detail, render_detail_expanded
 from padelf_dashboard.ui.statistics import render_statistics_button
 from padelf_dashboard.ui.glossary import render_glossary
 
@@ -63,6 +63,9 @@ try:
 
     if "selected_dataset" not in st.session_state:
         st.session_state.selected_dataset = None
+
+    if "detail_view_mode" not in st.session_state:
+        st.session_state.detail_view_mode = "compact"
 
     # Step 1: Render filters sidebar
     filters = render_filter_sidebar(datasets)
@@ -125,6 +128,13 @@ try:
         display_df = build_results_dataframe(final_results)
 
         left_col, right_col = st.columns([3, 2])
+
+        selected_dataset_key = st.session_state.selected_dataset
+        selected_dataset = (
+            dataset_by_id.get(selected_dataset_key)
+            if isinstance(selected_dataset_key, str)
+            else None
+        )
 
         with left_col:
             if HAS_AGGRID:
@@ -214,19 +224,30 @@ try:
             render_statistics_button(datasets, final_results)
             render_glossary(datasets)
 
-        with right_col:
-            selected_dataset_key = st.session_state.selected_dataset
-            selected_dataset = (
-                dataset_by_id.get(selected_dataset_key)
-                if isinstance(selected_dataset_key, str)
-                else None
-            )
+        if st.session_state.detail_view_mode == "compact":
+            with right_col:
+                with st.container(height=650):
+                    if selected_dataset is None:
+                        st.info("Select a dataset from the table to view details.")
+                    else:
+                        expand_label = "Expand view"
+                        _, btn_col = st.columns([4, 1])
+                        with btn_col:
+                            if st.button("⛶", key="toggle_detail_view", help=expand_label):
+                                st.session_state.detail_view_mode = "expanded"
+                                st.rerun()
 
-            with st.container(height=650):
-                if selected_dataset is None:
-                    st.info("Select a dataset from the table to view details.")
-                else:
-                    render_detail(selected_dataset)
+                        render_detail(selected_dataset)
+
+        if st.session_state.detail_view_mode == "expanded" and selected_dataset is not None:
+            st.markdown("---")
+            _, btn_col = st.columns([12, 1])
+            with btn_col:
+                if st.button("⛶", key="toggle_detail_view", help="Compact view"):
+                    st.session_state.detail_view_mode = "compact"
+                    st.rerun()
+
+            render_detail_expanded(selected_dataset)
 
 except Exception as e:
     st.error("Failed to load or validate metadata. ")
