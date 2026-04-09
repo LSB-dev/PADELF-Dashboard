@@ -1,4 +1,6 @@
-# Streamlit entry
+"""Streamlit entry point for the PADELF dashboard."""
+
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
@@ -27,6 +29,9 @@ from padelf_dashboard.ui.statistics import render_statistics_button
 from padelf_dashboard.ui.glossary import render_glossary
 
 
+ASSETS_DIR = Path(__file__).resolve().parents[2] / "assets"
+
+
 @st.cache_data(ttl=3600)  # Cache for 1 hour (3600 seconds)
 def get_datasets():
     return load_datasets()
@@ -34,7 +39,7 @@ def get_datasets():
 
 st.set_page_config(page_title="PADELF Dashboard - Browse Electric Load Forecasting Datasets",
                    layout="wide",
-                   page_icon="assets/icon.png",
+                   page_icon=str(ASSETS_DIR / "icon.png"),
                    initial_sidebar_state="expanded")
 
 try:
@@ -42,9 +47,9 @@ try:
     col1, col2, col3 = st.columns([2, 2, 2])
 
     with col1:
-        st.image("assets/logo_padelf_search.png", width=350)
+        st.image(str(ASSETS_DIR / "logo_padelf_search.png"), width=350)
     with col3:
-        st.image("assets/logos_both.png", width=400)
+        st.image(str(ASSETS_DIR / "logos_both.png"), width=400)
 
 
     st.caption(
