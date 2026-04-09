@@ -7,9 +7,10 @@
 PADELF-Search is an interactive Streamlit web application dashboard that enables researchers and practitioners to explore and discover electric load forecasting datasets from 43+ publicly available sources, streamlining the dataset selection process for load forecasting research and applications.
 
 ## Related Work
-### Pip-package: Easy access to the most popular datasets
+### pip-package: Easy access to the most popular datasets
 
-![logo padelf pip](logo_padelf_pip)
+![logo padelf pip](assets/logo_padelf_pip.png)
+
 For programmatic access to datasets in Python, use the [PADELF-PIP package](https://github.com/LSB-dev/padelf-pip):
 
 ```bash
@@ -20,7 +21,8 @@ This dashboard and the package are complementary: use the dashboard for discover
 
 ### The original data collection
 
-![logo padelf pip](logo_padelf_repo)
+![logo padelf pip](assets/logo_padelf_repo.png)
+
 This dashboard pulls dataset metadata from [Publicly-Available-Datasets-For-Electric-Load-Forecasting](https://github.com/LSB-dev/Publicly-Available-Datasets-For-Electric-Load-Forecasting) repository. 
 The dashboard loads dataset definitions from the `datasets.yaml` file generated from the README.md catalog.
 
