@@ -12,3 +12,38 @@ services:
     # Optional local dataset mount (instead of loading via URL):
     # volumes:
     #   - ./metadata/datasets_full.yaml:/app/metadata/datasets_full.yaml:ro
+
+  # Nginx - Backend Webserver
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  # Nginx Proxy Manager - Reverse Proxy mit Web-UI
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+    environment:
+      - DISABLE_IPV6=true
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - monitoring
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 10s
+      timeout: 3s
+  networks:
+    monitoring:
+      driver: bridge
