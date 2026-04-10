@@ -44,6 +44,6 @@ services:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
       timeout: 3s
-  networks:
-    monitoring:
-      driver: bridge
+networks:
+  monitoring:
+    driver: bridge
