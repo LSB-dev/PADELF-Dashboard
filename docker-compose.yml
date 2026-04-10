@@ -47,3 +47,7 @@ services:
 networks:
   monitoring:
     driver: bridge
+
+volumes:
+  npm_data:
+  npm_letsencrypt:
